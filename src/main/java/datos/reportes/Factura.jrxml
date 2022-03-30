@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ade9a305-6fd0-4601-adaa-97079e0319f2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+    v.numero_factura,
+    v.fecha_venta,
+    i.tipo_operacion,
+    CONCAT_WS(" ",i.tipo,
+    i.direccion) AS piso_vendido,
+    CONCAT_WS(" ", c.nombre,
+    c.apellidos) AS cliente,
+    CONCAT_WS(" ", c.tipo_documento,
+    c.numero_documento) AS dni,
+    c.direccion AS direcion_c,
+    v.hon_finales, round(v.hon_finales*21/100,2) as iva_op, round(v.hon_finales*1.21,2) as total_op 
+FROM
+    ventas v
+        JOIN
+    inmuebles i ON v.inmueble_id = i.id
+        JOIN
+    clientes c ON i.propietario_id = c.id
+WHERE v.id=$P!{id};]]>
+	</queryString>
+	<field name="numero_factura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_venta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_operacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="piso_vendido" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="dni" class="java.lang.String"/>
+	<field name="direcion_c" class="java.lang.String"/>
+	<field name="hon_finales" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="iva_op" class="java.math.BigDecimal"/>
+	<field name="total_op" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="189" splitType="Stretch">
+			<staticText>
+				<reportElement x="166" y="132" width="100" height="20" uuid="712c3ed7-04fb-405a-8716-a33bacfd5679"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURA Nº  nº ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="266" y="132" width="115" height="20" uuid="abee5f83-c751-477a-a664-0a16703f28c7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_factura}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="3460" height="102" uuid="8019b2b7-4ef0-47b2-b924-5cdcbb4f5878"/>
+				<imageExpression><![CDATA["C:\\Cursos\\ILERNA\\IlernaInmobSaris_8\\src\\datos\\reportes\\InmobiliariaSaris.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="497" splitType="Stretch">
+			<staticText>
+				<reportElement x="67" y="122" width="114" height="20" uuid="a477f2ae-177d-48ba-9805-f6d4947a3380"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HEMOS RECIBIDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="122" width="200" height="20" uuid="e1623351-f735-4e5d-b400-6a8d879bbe67"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[del cliente arriba indicado, la cantidad de ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="330" width="100" height="20" uuid="79bccd79-89de-44ec-98e0-2c3709f42733"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[I.V.A.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="350" width="100" height="20" uuid="a1d7c3fa-b9ce-4580-a397-d08fbf442026"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="114" y="431" width="67" height="20" uuid="23c0c266-961a-4fa4-b836-1ac69847e5e7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[En Madrid, a ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="119" y="207" width="249" height="20" uuid="6e160fae-9f7b-43ab-99d6-468d2bd6a8b2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_operacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="69" y="227" width="50" height="20" uuid="53c48915-e67f-4000-b5c5-48e2d8cf4fb5"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Inmueble:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="181" y="431" width="217" height="20" uuid="9c6f4d00-2099-44e4-a3a0-79eec83be2f6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_venta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="227" width="249" height="20" uuid="6cc37d49-b473-4aef-9a89-e77af0a23328"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{piso_vendido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="31" y="50" width="63" height="20" uuid="0847f13a-7683-43cd-9650-bb5855d54053"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="70" width="77" height="20" uuid="c59f13e3-6017-4e60-b024-f335cc57104f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Documento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="30" width="63" height="20" uuid="3c4b2b97-156d-496b-8760-88f6ad089c28"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="10" width="179" height="20" uuid="5b618a96-e5fe-4eff-a220-f34f22c7cfbd"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL CLIENTE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="95" y="30" width="220" height="20" uuid="89e63744-b5fb-46e6-adbd-48e69fd74ecb"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="50" width="220" height="20" uuid="5778725a-84f5-4e1f-9e61-3f2737a00687"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direcion_c}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="70" width="206" height="20" uuid="77da85a2-4eb9-4975-9dc4-68da5deb3e9f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dni}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="142" width="258" height="20" uuid="966f5a8d-9a07-47f2-902b-e4ff76091148"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[de  honorarios incluido I.V.A., por la intervenciòn de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="142" width="165" height="20" uuid="f5c8cbf6-4d0b-4210-a7f7-c7790def0979"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ SARIS INMOBILIARIA S.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="164" width="180" height="20" uuid="636e61ad-5a74-46bb-9ce9-e80523da8219"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[siguiente operación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="207" width="50" height="20" uuid="629a582a-451e-40c6-8792-e8a859d6b459"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Gestión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="274" width="188" height="20" uuid="86af9916-61b9-46ae-992d-86835f1b3a46"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Con arreglo a la siguiente liquidación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="310" width="100" height="20" uuid="4ee097b1-825d-4b46-a53f-474299cb75d5"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[HONORARIOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="441" y="122" width="72" height="20" uuid="d404be07-0ccb-4c07-b072-26fce6f0bbd8"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[ en concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="453" y="142" width="63" height="20" uuid="38367cf3-7f7e-4ea1-bc26-f7caa160c7dd"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[en la]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="235" y="310" width="100" height="20" uuid="1ac56d50-d1a5-40df-8892-ef1819ffb2e0"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hon_finales}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="235" y="330" width="100" height="20" uuid="64901a40-c38f-4e35-b18b-441369487f75"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva_op}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="235" y="350" width="100" height="20" uuid="28dd5b0a-43ca-4cbf-8190-ad0b66124be1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_op}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="381" y="122" width="60" height="20" uuid="dd64f762-b121-4533-ae9c-bb3849ab80c4"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_op}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
